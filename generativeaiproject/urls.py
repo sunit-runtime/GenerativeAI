@@ -1,3 +1,5 @@
+from generativeaiproject import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import RedirectView
@@ -25,4 +27,5 @@ urlpatterns = [
     path("logout/", views.user_logout, name="logout"),
     path("resetPassword/", views.send_email, name="send_email"),
     path("change-password/<str:token>/", views.new_password, name="reset_password"),
-]
+    path('favicon.ico', RedirectView.as_view(url=settings.STATIC_URL + 'favicon.ico')),
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
