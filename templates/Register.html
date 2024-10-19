@@ -128,14 +128,7 @@
 </div>
 
 <script>
-    window.onload = function () {
-        const errorMessage = document.getElementById('error-message');
-        if (errorMessage) {
-            setTimeout(() => {
-                errorMessage.innerHTML = '&nbsp;';
-            }, 5000);
-        }
-
+    // window.onload = function () {
         const visibleButton = document.getElementById('visible-button');
         visibleButton.innerHTML = `<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
             <path d="M12 5c7 0 10 7 10 7s-3 7-10 7S2 12 2 12s3-7 10-7Z" stroke-width="2"/>
@@ -147,7 +140,7 @@
             <path d="M12 5c7 0 10 7 10 7s-3 7-10 7S2 12 2 12s3-7 10-7Z" stroke-width="2"/>
             <circle cx="12" cy="12" r="3" stroke-width="2"/>
         </svg>`;
-    }
+    // }
 
     function togglePasswordVisibility(passwordFieldId, buttonId) {
         const passwordField = document.getElementById(passwordFieldId);

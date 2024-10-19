@@ -115,16 +115,8 @@
 
 
 <script>
-    window.onload = function () {
-        const errorMessage = document.getElementById('error-message');
-        if (errorMessage) {
-            setTimeout(() => {
-                errorMessage.innerHTML = '&nbsp;';
-            }, 5000); // 5 seconds
-        }
-    }
-
     document.getElementById('resentlink').addEventListener('click', function (event) {
+        document.getElementById('resentlink').disabled = true;
         const errorMessage = document.getElementById('error-message');
         event.preventDefault();
         let email = document.getElementById('email').value;
@@ -146,13 +138,14 @@
                     errorMessage.style.color = 'var(--error-color)';
                 }
                 errorMessage.innerHTML = data.message;
+                document.getElementById('closeButton').click();
             })
             .catch(error => {
                 console.error('Error:', error);
                 errorMessage.style.color = 'var(--error-color)';
                 errorMessage.innerHTML = 'An error occurred. Please try again later.';
+                document.getElementById('closeButton').click();
             });
-        document.getElementById('closeButton').click();
     });
 
 </script>

@@ -101,6 +101,13 @@ def user_register(request):
         lastname = request.POST.get("lastname")
         email = request.POST.get("email")
 
+        if User.objects.filter(email=email).exists():
+            return render(
+                request,
+                "Register.html",
+                {"error": "Email already exists, please try again."},
+            )
+
         user = User.objects.create_user(
             username=username,
             password=password,
