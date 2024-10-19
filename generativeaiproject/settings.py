@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = "https://sunitruntime81.pythonanywhere.com/"
 
 GEMINI_API_KEY = "AIzaSyBrGN6AipqQoMkCiU7u5YNaH73hoYSAUuU"
 HUGGINGFACE_API_KEY  = "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"
@@ -21,7 +21,7 @@ DEFAULT_FROM_EMAIL = 'sunit.runtime@gmail.com'
 key = b'CzmbdQnjTX2j0Rq-xw0ehufz8O8cEiF0UkcEQTDDomM='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
