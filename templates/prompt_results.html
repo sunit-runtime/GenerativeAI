@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}Prompt Results{% endblock %}
+
+{% block content %}
+<style>
+    .card {
+        color: whitesmoke;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .card h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+    
+    label {
+        font-size: 1.2em;
+        font-weight: bold;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .card {
+        margin: 20px auto;
+        padding: 5px;
+    }
+
+    .card-header {
+        background: transparent;
+        font-size: 1.5em;
+        font-weight: bold;
+        text-align: center;
+        
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: aliceblue;
+        text-align: center;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    table tbody {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: aliceblue;
+        text-align: left;
+        font-family: 'Times New Roman', Times, serif;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+<div class="card">
+    <div class="card-header">
+        Results for Prompt: "{{ prompt.prompt_text }}"
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Test Results</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Test Output</th>
+                    <th>Code Coverage</th>
+                    <th>Passed Tests</th>
+                    <th>Failed Tests</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>
+                        <pre>{{ result.test_output }}</pre>
+                    </td>
+                    <td>{{ result.coverage }}%</td>
+                    <td>{{ result.passed_tests }}</td>
+                    <td>{{ result.failed_tests }}</td>
+                    <td>{{ result.created_at }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No results found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Test cases
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>
+                        <pre>{{ result.code }}</pre>
+                    </td>
+                    <td>
+                        <pre>{{ result.test_cases }}</pre>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">No code found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<style>
+    .error-message {
+        text-align: center;
+        display: block;
+        color: var(--error-color);
+        margin-top: 10px;
+    }
+
+    .modal-content {
+        background-color: var(--secondary-color);
+        color: var(--text-color);
+        transition: background-color 0.3s ease;
+    }
+
+    .modal-content div {
+        border: none;
+    }
+
+    .floating-label-group {
+        position: relative;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .floating-label-group label {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+        color: var(--text-color);
+        transition: all 0.3s ease;
+        pointer-events: none;
+        font-size: 1rem;
+        letter-spacing: 2px;
+        background: transparent;
+        padding: 0 5px;
+    }
+
+    .floating-label-group input:focus+label,
+    .floating-label-group input:not(:placeholder-shown)+label {
+        top: -12px;
+        font-size: 12px;
+        padding: 0 5px;
+        left: 10px;
+    }
+
+    .floating-label-group input:focus {
+        background-color: var(--input-focus-color);
+    }
+
+    .floating-label-group .visible-button {
+        position: absolute;
+        top: 35%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+</style>
+
+<div class="login-container">
+    <h2>Login</h2>
+    <form class="row g-3" method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <div class="floating-label-group">
+                <input type="text" class="form-control" id="userName" name="username" placeholder=" " required>
+                <label for="userName">Enter your username</label>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="floating-label-group">
+                <input type="password" class="form-control" id="password" name="password" placeholder=" " required>
+                <label for="password">Enter your password</label>
+            </div>
+        </div>
+        <button type="submit" class="btn-login">Sign In</button>
+        <a href="#" class="forgot-password" data-bs-toggle="modal" data-bs-target="#exampleModal">Forgot your
+            password?</a>
+        {% if error %}
+        <p id="error-message" class="error-message">{{ error }}</p>
+        {%else%}
+        <p id="error-message" class="error-message">&nbsp;</p>
+        {% endif %}
+    </form>
+</div>
+
+<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Reset Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="floating-label-group">
+                    <input type="email" class="form-control" id="email" name="email" placeholder=" " required>
+                    <label for="email">Enter your email</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeButton">Close</button>
+                <button type="button" class="btn btn-primary" id="resentlink">Send Reset Link</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    window.onload = function () {
+        const errorMessage = document.getElementById('error-message');
+        if (errorMessage) {
+            setTimeout(() => {
+                errorMessage.innerHTML = '&nbsp;';
+            }, 5000); // 5 seconds
+        }
+    }
+
+    document.getElementById('resentlink').addEventListener('click', function (event) {
+        const errorMessage = document.getElementById('error-message');
+        event.preventDefault();
+        let email = document.getElementById('email').value;
+        let formData = new FormData();
+        formData.append('user_email', email);
+
+        fetch("{% url 'send_email' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    errorMessage.style.color = 'var(--success-color)';
+                } else {
+                    errorMessage.style.color = 'var(--error-color)';
+                }
+                errorMessage.innerHTML = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorMessage.style.color = 'var(--error-color)';
+                errorMessage.innerHTML = 'An error occurred. Please try again later.';
+            });
+        document.getElementById('closeButton').click();
+    });
+
+</script>
+{% endblock %}

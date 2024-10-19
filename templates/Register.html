@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<style>
+    .group-information {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .floating-label-group {
+        position: relative;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .floating-label-group label {
+        position: absolute;
+        left: 10px;
+        top: 35%;
+        transform: translateY(-50%);
+        font-size: 16px;
+        color: var(--text-color);
+        transition: all 0.3s ease;
+        pointer-events: none;
+        font-size: 1rem;
+        letter-spacing: 2px;
+        background: transparent;
+        padding: 0 5px;
+    }
+
+    .floating-label-group input:focus+label,
+    .floating-label-group input:not(:placeholder-shown)+label {
+        top: -12px;
+        font-size: 12px;
+        padding: 0 5px;
+        left: 10px;
+    }
+
+    .floating-label-group .visible-button {
+        position: absolute;
+        top: 35%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .visible-button svg {
+        transition: transform 0.3s ease;
+    }
+
+    .visible-button.show svg {
+        transform: rotate(180deg);
+    }
+
+    .error-message {
+        text-align: center;
+        display: block;
+        color: var(--error-color);
+        margin-top: 10px;
+    }
+
+    .btn-register {
+        background-color: var(--disabled-button-color);
+        border: none;
+        width: 100%;
+        padding: 15px;
+        border-radius: 8px;
+        color: var(--text-color);
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+</style>
+
+<div class="register-container">
+    <h2>Register</h2>
+    <form class="row" method="POST" action="{% url 'register' %}">
+        {% csrf_token %}
+        <div class="mb-1 group-information">
+            <div class="floating-label-group">
+                <input type="text" class="form-control" id="userName" name="username" placeholder=" " autocomplete="off"
+                    required>
+                <label for="userName">Enter your username</label>
+            </div>
+            <div class="floating-label-group">
+                <input type="email" class="form-control" id="email" name="email" placeholder=" " required>
+                <label for="email">Enter your email</label>
+            </div>
+        </div>
+        <div class="mb-1 group-information">
+            <div class="floating-label-group">
+                <input type="text" class="form-control" id="firstname" name="firstname" placeholder=" " required>
+                <label for="firstname">Enter your first name</label>
+            </div>
+            <div class="floating-label-group">
+                <input type="text" class="form-control" id="lastname" name="lastname" placeholder=" " required>
+                <label for="lastname">Enter your last name</label>
+            </div>
+        </div>
+        <div class="mb-1 group-information">
+            <div class="floating-label-group">
+                <input type="password" class="form-control" id="password" name="password" placeholder=" "
+                    autocomplete="off" required>
+                <label for="password">Enter your password</label>
+                <span id="visible-button" class="visible-button"
+                    onclick="togglePasswordVisibility('password', 'visible-button')"></span>
+            </div>
+            <div class="floating-label-group">
+                <input type="password" class="form-control" id="re-enter-password" name="re-enter-password"
+                    placeholder=" " oninput="checkPasswordMatch()" required>
+                <label for="re-enter-password">Re-Enter your password</label>
+                <span id="re-visible-button" class="visible-button"
+                    onclick="togglePasswordVisibility('re-enter-password', 're-visible-button')"></span>
+            </div>
+        </div>
+        <button type="submit" class="btn-register" disabled>Register</button>
+        <a href="/login" class="forgot-password">Already a user?</a>
+        {% if error %}
+        <p id="error-message" class="error-message">{{ error }}</p>
+        {%else%}
+        <p id="error-message" class="error-message">&nbsp;</p>
+        {% endif %}
+    </form>
+</div>
+
+<script>
+    window.onload = function () {
+        const errorMessage = document.getElementById('error-message');
+        if (errorMessage) {
+            setTimeout(() => {
+                errorMessage.innerHTML = '&nbsp;';
+            }, 5000);
+        }
+
+        const visibleButton = document.getElementById('visible-button');
+        visibleButton.innerHTML = `<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
+            <path d="M12 5c7 0 10 7 10 7s-3 7-10 7S2 12 2 12s3-7 10-7Z" stroke-width="2"/>
+            <circle cx="12" cy="12" r="3" stroke-width="2"/>
+        </svg>`;
+
+        const repasswordvisibleButton = document.getElementById('re-visible-button');
+        repasswordvisibleButton.innerHTML = `<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
+            <path d="M12 5c7 0 10 7 10 7s-3 7-10 7S2 12 2 12s3-7 10-7Z" stroke-width="2"/>
+            <circle cx="12" cy="12" r="3" stroke-width="2"/>
+        </svg>`;
+    }
+
+    function togglePasswordVisibility(passwordFieldId, buttonId) {
+        const passwordField = document.getElementById(passwordFieldId);
+        const visibleButton = document.getElementById(buttonId);
+
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            visibleButton.classList.add('show');
+            visibleButton.innerHTML = `<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
+                <path d="M12 5c7 0 10 7 10 7s-3 7-10 7S2 12 2 12s3-7 10-7Z" stroke-width="2"/>
+                <circle cx="12" cy="12" r="3" stroke-width="2"/>
+                <path d="M1 1l22 22" stroke-width="2"/>
+            </svg>`;
+        } else {
+            passwordField.type = 'password';
+            visibleButton.classList.remove('show');
+            visibleButton.innerHTML = `<svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor">
+                <path d="M12 5c7 0 10 7 10 7s-3 7-10 7S2 12 2 12s3-7 10-7Z" stroke-width="2"/>
+                <circle cx="12" cy="12" r="3" stroke-width="2"/>
+            </svg>`;
+        }
+    }
+
+    function checkPasswordMatch() {
+        const password = document.getElementById('password').value;
+        const reEnterPassword = document.getElementById('re-enter-password').value;
+        const registerButton = document.querySelector('.btn-register');
+
+        if (password === reEnterPassword) {
+            registerButton.disabled = false;
+            registerButton.style.backgroundColor = 'var(--button-primary-color)';
+        } else {
+            registerButton.disabled = true;
+            registerButton.style.backgroundColor = 'var(--disabled-button-color)';
+        }
+    }
+</script>
+{% endblock %}

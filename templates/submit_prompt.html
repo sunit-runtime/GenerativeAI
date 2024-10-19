@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit a Prompt{% endblock %}
+
+{% block content %}
+<style>
+    .card {
+        color: var(--text-color);
+        background: var(--secondary-color);
+        backdrop-filter: blur(10px);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: var(--box-shadow);
+        width: 100%;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .card h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    form {
+        margin: 0 auto;
+        width: 70%;
+    }
+
+    textarea {
+        width: 100%;
+        background: var(--secondary-color);
+        border: var(--border-primary-color);
+        color: var(--text-color);
+        border-radius: 8px;
+        padding: 15px;
+        font-size: 1rem;
+        margin-bottom: 20px;
+        transition: background 0.3s ease;
+        resize: none;
+        padding: 5px;
+        font-family: 'Times New Roman', Times, serif;
+        text-wrap: nowrap;
+    }
+
+    textarea:focus{
+        text-wrap: wrap;
+        background: var(--input-focus-color);
+        box-shadow: none;
+        outline: none;
+        color: var(--primary-color-one);
+        border: var(--secondary-border);
+    }
+
+    label {
+        font-size: 1.2em;
+        font-weight: bold;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .card {
+        margin: 20px auto;
+        width: 50%;
+        padding: 5px;
+    }
+
+    .card-header {
+        background: transparent;
+        font-size: 1.5em;
+        font-weight: bold;
+        text-align: center;
+
+    }
+
+    .btn {
+        background-color: var(--second-button-color);
+        border: none;
+        width: 100%;
+        padding: 15px;
+        border-radius: 8px;
+        color: var(--text-color);
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: var(--second-button-hover-color);
+    }
+</style>
+<div class="card">
+    <div class="card-header">
+        Prompt Box
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{% url 'submit_prompt' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="button__container">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
