@@ -1,3 +1,28 @@
+"""
+URL configuration for the generativeaiproject.
+This module defines the URL patterns for the Django project, including custom error handlers and 
+routes for various views such as submitting prompts, viewing results, user authentication, and 
+password management.
+Routes:
+    - admin/: Admin site.
+    - /: Redirects to the submit prompt page.
+    - submit/: Submit a prompt.
+    - results/<int:prompt_id>/: View results for a specific prompt.
+    - login/: User login.
+    - register/: User registration.
+    - logout/: User logout.
+    - resetPassword/: Send password reset email.
+    - change-password/<str:token>/: Reset password using a token.
+    - favicon.ico: Redirects to the favicon.
+Custom Error Handlers:
+    - handler404: Custom 404 page not found view.
+    - handler500: Custom 500 internal server error view.
+    - handler403: Custom 403 permission denied view.
+    - handler400: Custom 400 bad request view.
+Static Files:
+    - Serves static files during development.
+"""
+
 from generativeaiproject import settings
 from django.conf.urls.static import static
 from django.contrib import admin

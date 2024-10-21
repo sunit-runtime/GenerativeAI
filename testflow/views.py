@@ -1,3 +1,38 @@
+"""
+This module contains views for handling user interactions and API requests in the Generative AI project.
+Functions:
+    submit_prompt(request):
+        Handles the submission of a prompt by an authenticated user and generates code based on the prompt.
+    generate_code(prompt):
+        Generates code and corresponding unit tests for a given prompt using the Generative AI model.
+    prompt_results(request, prompt_id):
+        Displays the results of the generated code and tests for a given prompt.
+    user_login(request):
+        Handles user login functionality.
+    user_register(request):
+        Handles user registration functionality.
+    user_logout(request):
+        Logs out the current user.
+    custom_page_not_found_view(request, exception):
+        Custom view for handling 404 Page Not Found errors.
+    custom_error_view(request):
+        Custom view for handling 500 Server Error.
+    custom_permission_denied_view(request, exception):
+        Custom view for handling 403 Permission Denied errors.
+    custom_bad_request_view(request, exception):
+        Custom view for handling 400 Bad Request errors.
+    send_email(request):
+        API view for sending a password reset email to the user.
+    password_reset_request(email):
+        Creates or updates a password reset request for the given email and returns the encrypted reset token.
+    new_password(request, token):
+        Handles the setting of a new password using the provided reset token.
+    encrypt_data(data):
+        Encrypts the given data using Fernet encryption.
+    decrypt_data(encrypted_data):
+        Decrypts the given encrypted data using Fernet encryption.
+"""
+
 import google.generativeai as genai
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PromptForm
@@ -14,7 +49,6 @@ import datetime as dt
 import ast
 
 cipher_suite = Fernet(settings.key)
-
 
 def submit_prompt(request):
     if not request.user.is_authenticated:
