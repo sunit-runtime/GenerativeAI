@@ -39,7 +39,7 @@ class StateManager:
 
     @staticmethod
     def handle_non_code_generator(state):
-        return {"response": "I am not a code generator.", "success": False}
+        return {"response": "I am a code generator. Please check Prompt.", "success": False}
 
     @staticmethod
     def handle_code_generator(state):
