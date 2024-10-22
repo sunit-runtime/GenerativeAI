@@ -20,6 +20,7 @@ class PromptState(TypedDict):
     count: Optional[int] = 0
     best_code: Optional[str] = None
     best_accuracy: Optional[float] = 0.0
+    best_code_execution_result: Optional[str] = None
 
 
 class StateManager:
@@ -110,6 +111,7 @@ class StateManager:
                 "error": str(execution_result.errors),
                 "best_code": generate_code,
                 "best_accuracy": accuracy,
+                "best_code_execution_result": str(execution_result),
             }
         else:
             return {
@@ -120,6 +122,7 @@ class StateManager:
                 "error": str(execution_result.errors),
                 "best_code": state.get("best_code", ""),
                 "best_accuracy": state.get("best_accuracy", 0.0),
+                "best_code_execution_result": state.get("best_code_execution_result", ""),
             }
 
     @staticmethod
