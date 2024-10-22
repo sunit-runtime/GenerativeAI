@@ -15,7 +15,11 @@ def collect_input(request):
     serializer = PromptSerializer(data=request.data)
     if serializer.is_valid():
         prompt_data = serializer.validated_data
-        response = process_prompt(prompt_data["prompt"])
+        try:
+            response  = process_prompt(prompt_data["prompt"])
+        except Exception as e:
+            print(e)
+            return Response({"response": f"Error: {e}"}, status=500)
 
         return Response({"response": response}, status=200)
     else:
