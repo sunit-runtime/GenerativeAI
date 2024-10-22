@@ -29,7 +29,7 @@ def collect_input(request):
 def process_prompt(prompt):
     app = __workflowInit__()
     result = app.invoke({"prompt": prompt})
-    print(app.get_graph().draw_ascii())
+    # print(app.get_graph().draw_ascii())
     return result
 
 
