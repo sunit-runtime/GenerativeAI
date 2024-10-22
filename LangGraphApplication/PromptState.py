@@ -18,6 +18,8 @@ class PromptState(TypedDict):
     error: Optional[str] = None
     accuracy: Optional[float] = 0.0
     count: Optional[int] = 0
+    best_code: Optional[str] = None
+    best_accuracy: Optional[float] = 0.0
 
 
 class StateManager:
@@ -99,13 +101,26 @@ class StateManager:
         print(f"Result ---> {execution_result}, Accuracy ---> {accuracy}")
         print("--------------------DEBUGGING-------------------")
 
-        return {
-            "execution_result": str(execution_result),
-            "accuracy": accuracy,
-            "count": count,
-            "failure": str(execution_result.failures),
-            "error": str(execution_result.errors),
-        }
+        if accuracy > state.get("best_accuracy", 0.0):
+            return {
+                "execution_result": str(execution_result),
+                "accuracy": accuracy,
+                "count": count,
+                "failure": str(execution_result.failures),
+                "error": str(execution_result.errors),
+                "best_code": generate_code,
+                "best_accuracy": accuracy,
+            }
+        else:
+            return {
+                "execution_result": str(execution_result),
+                "accuracy": accuracy,
+                "count": count,
+                "failure": str(execution_result.failures),
+                "error": str(execution_result.errors),
+                "best_code": state.get("best_code", ""),
+                "best_accuracy": state.get("best_accuracy", 0.0),
+            }
 
     @staticmethod
     def improve_code(state):
