@@ -15,7 +15,6 @@ import ast
 
 cipher_suite = Fernet(settings.key)
 
-
 def submit_prompt(request):
     if not request.user.is_authenticated:
         return redirect("login")
