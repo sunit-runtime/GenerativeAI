@@ -98,9 +98,9 @@ class StateManager:
         execution_result, accuracy = utils.execute_codes(generate_code, test_case)
         count = state["count"] + 1
 
-        print("--------------------DEBUGGING-------------------")
-        print(f"Result ---> {execution_result}, Accuracy ---> {accuracy}")
-        print("--------------------DEBUGGING-------------------")
+        # print("--------------------DEBUGGING-------------------")
+        # print(f"Result ---> {execution_result}, Accuracy ---> {accuracy}")
+        # print("--------------------DEBUGGING-------------------")
 
         if accuracy > state.get("best_accuracy", 0.0):
             return {

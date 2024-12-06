@@ -13,7 +13,6 @@ class GraphState(TypedDict):
     classification: Optional[str] = None
     response: Optional[str] = None
 
-
 def classify_text(prompt):
     response = model.generate_content(
         f"classify intent of given input as code_generator or a non_code_generator? Output just the class name. Input:{prompt}",
